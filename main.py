@@ -46,8 +46,8 @@ class OrderData(BaseModel):
 class AddressData(BaseModel):
     addressName: str
 
-APP_URL = "https://mint-daily-longhorn.ngrok-free.app/"
-#APP_URL = "http://127.0.0.1"
+#APP_URL = "https://mint-daily-longhorn.ngrok-free.app/"
+APP_URL = "http://127.0.0.1:81"
 
 
 @app.get("/")
