@@ -1,4 +1,3 @@
-# FastApiOrderManagementSystem
 <p> Простой сервис на FastAPI, принимающий запросы от <a href="https://github.com/HythlodaeusKonstantin/ordermanagementsystem">фронтэнда на Vue3</a> и перенаправляющий их на HTTP сервисы в базе 1С </p>
 
 ### Зачем нужна прослойка в виде FastAPI, если можно было напрямую из Vue3 связываться c базой 1С?
