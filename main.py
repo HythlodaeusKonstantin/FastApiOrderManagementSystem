@@ -46,15 +46,16 @@ class OrderData(BaseModel):
 class AddressData(BaseModel):
     addressName: str
 
-#APP_URL = "https://mint-daily-longhorn.ngrok-free.app/"
 APP_URL = "http://127.0.0.1:81"
 
 
+# Пустой GET для отладки
 @app.get("/")
 def hello():
     return "Hello world!"
-  
 
+
+ # Получаем с сайта логин/пароль и вызываем метод, генерирующий jwt токен на стороне 1С 
 @app.post("/token")
 def create_token(item: AuthData):
     uri = APP_URL + '/BaseProduction/hs/rest/token'
@@ -64,8 +65,10 @@ def create_token(item: AuthData):
        return JSONResponse(content=json.dumps(JSON), status_code=200)
     else:
         return JSONResponse(content="{token: null}", status_code=responce.status_code)
-    
 
+
+# Получаем с сайта данные о новом заказе и вызываем на стороне 1С POST метод создания заказа
+# Если в хедере нет токена, возвращаем 401
 @app.post('/orders')
 def create_order(request: Request, item: OrderData):
     token = request.headers.get("authorization").replace("Bearer ", "")
@@ -97,6 +100,8 @@ def create_order(request: Request, item: OrderData):
         return JSONResponse("{status: not authorized}",status_code=401)
     
 
+# Получаем с сайта данные о новом адресе доставки и вызываем на стороне 1С POST метод создания адреса
+# Если в хедере нет токена, возвращаем 401
 @app.post('/address')
 def create_order(request: Request, item: AddressData):
     token = request.headers.get("authorization").replace("Bearer ", "")
@@ -118,6 +123,7 @@ def create_order(request: Request, item: AddressData):
         return JSONResponse("{status: not authorized}",status_code=401)
 
 
+# Перенаправляем в 1С запрос на получение заказов
 @app.get('/orders')
 def get_orders(request: Request):
     token = request.headers.get("authorization").replace("Bearer ", "")
@@ -134,6 +140,7 @@ def get_orders(request: Request):
         return JSONResponse("{status: not authorized}",status_code=401)
     
 
+# Перенаправляем в 1С запрос на получение расходных накладных
 @app.get('/shipments')
 def get_shipments(request: Request):
     token = request.headers.get("authorization").replace("Bearer ", "")
@@ -150,6 +157,7 @@ def get_shipments(request: Request):
         return JSONResponse("{status: not authorized}",status_code=401)
  
 
+# Перенаправляем в 1С запрос на получение номенклатуры
 @app.get('/products')
 def get_products(request: Request):
     token = request.headers.get("authorization").replace("Bearer ", "")
@@ -166,6 +174,7 @@ def get_products(request: Request):
         return JSONResponse("{status: not authorized}",status_code=401)
     
 
+# Перенаправляем в 1С запрос на получение контрагентов
 @app.get('/partners')
 def get_partners(request: Request):
     token = request.headers.get("authorization").replace("Bearer ", "")
@@ -182,6 +191,7 @@ def get_partners(request: Request):
         return JSONResponse("{status: not authorized}",status_code=401)
     
 
+# Перенаправляем в 1С запрос на получение адресов доставки по контрагенту
 @app.get('/address')
 def get_address(request: Request):
     token = request.headers.get("authorization").replace("Bearer ", "")
@@ -198,6 +208,7 @@ def get_address(request: Request):
         return JSONResponse("{status: not authorized}",status_code=401)
     
 
+# Перенаправляем в 1С запрос на получение данных о авторизованном пользователе
 @app.get('/userinfo')
 def get_userinfo(request: Request):
     token = request.headers.get("authorization").replace("Bearer ", "")
